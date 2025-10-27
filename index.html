@@ -815,8 +815,48 @@ document.addEventListener('DOMContentLoaded', () => {
         // تشغيل التحقق عند تحميل الصفحة
         checkLoginStatus();
     </script>
+<script>
+document.getElementById('generalForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // جمع البيانات
+    const fullName = this.querySelector('input[type="text"]').value;
+    const age = this.querySelector('input[type="number"]').value;
+    const phone = this.querySelector('input[type="tel"]').value;
+    const reason = this.querySelector('textarea').value;
+
+    // ضع رابط Webhook الخاص بك هنا
+    const webhookURL = "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYz";
+
+    // تكوين الرسالة
+    const payload = {
+        content: `**تقديم جديد لريد تاون**\n**الاسم:** ${fullName}\n**العمر:** ${age}\n**رقم الهاتف:** ${phone}\n**السبب:** ${reason}`
+    };
+
+    // إرسال البيانات للـ Discord
+    try {
+        const response = await fetch(webhookURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+            alert("✅ تم إرسال طلب الانضمام بنجاح!");
+            this.reset(); // إعادة تعيين النموذج
+            showSection('home'); // العودة للصفحة الرئيسية
+        } else {
+            alert("❌ حدث خطأ، حاول مرة أخرى.");
+        }
+    } catch (error) {
+        alert("❌ حدث خطأ، تحقق من اتصال الإنترنت أو رابط Webhook.");
+        console.error(error);
+    }
+});
+</script>
 </body>
 </html>
+
 
 
 
