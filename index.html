@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Town - ريد تاون</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a0000;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(139, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 2px solid #8B0000;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8B0000, #FF0000);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.6);
+        }
+
+        nav {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #ffffff;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8B0000, #FF0000);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: rgba(139, 0, 0, 0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ffffff;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B0000, #FF0000);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.4), rgba(255, 0, 0, 0.3));
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFF, #8B0000, #FF0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 24px;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .discord-login {
+            display: inline-block;
+            padding: 18px 50px;
+            background: #f80000;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 10px 40px rgba(242, 88, 88, 0.4);
+            animation: fadeInUp 1s ease 0.4s backwards;
+            border: 2px solid #fefefe;
+        }
+
+        .discord-login:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(242, 88, 88, 0.4);
+            background: #FF0000;
+        }
+
+        .apply-now-btn {
+            display: none;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #8B0000, #FF0000);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 10px 40px rgba(139, 0, 0, 0.5);
+            border: 2px solid #fefefe;
+            cursor: pointer;
+        }
+
+        .apply-now-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(139, 0, 0, 0.7);
+            background: linear-gradient(135deg, #FF0000, #8B0000);
+        }
+
+        /* باقي الCSS نفس الكود السابق */
+        .section {
+            padding: 100px 50px;
+            position: relative;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, #FFF, #8B0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .player-card {
+            background: rgba(139, 0, 0, 0.2);
+            border: 2px solid rgba(139, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-card:hover {
+            transform: translateY(-10px);
+            border-color: #8B0000;
+            box-shadow: 0 20px 60px rgba(139, 0, 0, 0.4);
+        }
+
+        .player-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 3px solid #8B0000;
+            background: linear-gradient(135deg, #8B0000, #FF0000);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .player-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #fefefe;
+        }
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .job-card {
+            background: rgba(139, 0, 0, 0.2);
+            border: 2px solid rgba(139, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .job-card:hover {
+            transform: translateY(-10px);
+            border-color: #8B0000;
+            box-shadow: 0 20px 60px rgba(139, 0, 0, 0.4);
+        }
+
+        .job-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #fefefe;
+        }
+
+        .job-description {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+
+        .apply-info {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 18px;
+            color: #fefefe;
+            background: rgba(139, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #8B0000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #1a0000;
+            color: white;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #FFF, #8B0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background: #8B0000;
+            border-radius: 2px;
+        }
+        
+        .rules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .rule-item {
+            background: rgba(139, 0, 0, 0.2);
+            border: 2px solid rgba(139, 0, 0, 0.4);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .rule-item:hover {
+            background: rgba(139, 0, 0, 0.3);
+            border-color: #8B0000;
+            transform: translateX(-5px);
+        }
+        
+        .rule-title {
+            padding: 20px 25px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #fefefe;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .rule-title::after {
+            content: '+';
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .rule-item.active .rule-title::after {
+            content: '-';
+        }
+        
+        .rule-desc {
+            padding: 0 25px;
+            height: 0;
+            overflow: hidden;
+            color: #ccc;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        .rule-item.active .rule-desc {
+            padding: 0 25px 25px 25px;
+            height: auto;
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .rule-title {
+                font-size: 1.1rem;
+                padding: 15px 20px;
+            }
+            
+            .rule-desc {
+                font-size: 1rem;
+            }
+        }
+        .application-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(139, 0, 0, 0.2);
+            border: 2px solid rgba(139, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(139, 0, 0, 0.4);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #8B0000, #FF0000);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #fefefe;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #FF0000, #8B0000);
+            transform: translateY(-3px);
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139, 0, 0, 0.3), transparent);
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .circle:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .circle:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            50% {
+                transform: translate(30px, 30px) scale(1.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            nav {
+                gap: 20px;
+                font-size: 14px;
+            }
+            .hero h1 {
+                font-size: 42px;
+            }
+            .hero p {
+                font-size: 18px;
+            }
+            .section-title {
+                font-size: 32px;
+            }
+            .players-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+            }
+            .section {
+                padding: 60px 20px;
+            }
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+            .application-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <header class="header">
+        <div class="logo">R</div>
+        <nav>
+            <a href="#" onclick="showSection('home')">الرئيسية</a>
+            <a href="#" onclick="showSection('players')">صناع المحتوى</a>
+            <a href="#" onclick="showSection('jobs')">الوظائف</a>
+            <a href="#" onclick="showSection('rules')">القوانين</a>
+            <div id="userInfo" class="user-info">
+                <div class="user-avatar" id="userAvatar">?</div>
+                <span id="userName">مستخدم</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home" class="section active">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Red Town | ريد تاون</h1>
+                <p>حياكم الله في سيرفر ريد تاون المتخصص في الرول بلاي. نوفر لكم تجربة لعب استثنائية في عالم الجريمة والإنقاذ والمحاماة. انضم إلينا وعش حياتك كما تريد!</p>
+                
+                <!-- زر تسجيل الدخول بـ Discord برابط OAuth حقيقي -->
+                <a href="https://discord.com/oauth2/authorize?client_id=1431990431310417993&redirect_uri=http://localhost:http://127.0.0.1:5500/&response_type=code&scope=identify%20email" 
+                   class="discord-login">
+                   🚀 تسجيل الدخول بـ Discord
+                </a>
+                
+                <!-- زر التقديم (يظهر بعد تسجيل الدخول) -->
+                <button id="applyNow" class="apply-now-btn" onclick="showApplication('general')">
+                    📝 قدم الآن
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- باقي الأقسام نفس الكود السابق -->
+    <section id="players" class="section">
+        <h2 class="section-title">أبرز صناع المحتوى</h2>
+        <div class="players-grid">
+            <div class="player-card">
+                <div class="player-avatar">502</div>
+                <div class="player-name">mohammed aldosre</div>
+            </div>
+            <div class="player-card">
+                <div class="player-avatar">r</div>
+                <div class="player-name">rawad</div>
+            </div>
+            <div class="player-card">
+                <div class="player-avatar">v</div>
+                <div class="player-name">Voltex</div>
+            </div>
+            <div class="player-card">
+                <div class="player-avatar">d</div>
+                <div class="player-name">diyar</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="jobs" class="section">
+        <h2 class="section-title">الوظائف المتاحة</h2>
+        <div class="apply-info">
+            يمكنك طلب التقديم على الوظائف المتاحة داخل سيرفر فايف ام "ريد تاون" التي تكون بنظام المقابلات او المطلوب منك التقديم من هذا القسم
+        </div>
+        <div class="jobs-grid">
+            <div class="job-card" onclick="showApplication('police')">
+                <div class="job-title">شرطة ريد تاون</div>
+                <div class="job-description">تقديم منتسبين شرطة ريد تاون. انضم إلى قوة الشرطة للحفاظ على الأمن والنظام في المدينة.</div>
+            </div>
+            <div class="job-card" onclick="showApplication('ambulance')">
+                <div class="job-title">إسعاف ريد تاون</div>
+                <div class="job-description">نبحث عن الأفراد المهتمين بإنقاذ أرواح الآخرين ومساعدة الناس. قدم الآن وانقذ حياة!</div>
+            </div>
+            <div class="job-card" onclick="showApplication('lawyer')">
+                <div class="job-title">محامي ريد تاون</div>
+                <div class="job-description">للتقديم على رخصة المحاماة من نقابة محامين ريد تاون، التي تتيح لك مزاولة مهنة المحاماة وفقاً للأنظمة والشروط المعتمدة.</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="rules" class="section">
+        <h2 class="section-title">القوانين</h2>
+        <div class="rules-list">
+            <div class="rule-item">
+                <div class="rule-title"> قوانين الحياة الجديدة - NLR</div>
+                <div class="rule-desc">
+                    في حال اغمائك بشكل كامل لا يمكنك الكلام او الحركة او فعل أي شيء في حال تم اسقاطك من قبل شخص و تم انعاشك من قبل مسعفين تستطيع تذكر جميع الاحداث في حال تم اعطائك ابرة "في العيادة الخاصة" من احد اللاعبين اللذين لديهم عداوة معك لا تستطيع تذكر أي شي حصل لك ( منها العداوات او الاحداث )
+                </div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-title"> باور جيمينج - PowerGaming</div>
+                <div class="rule-desc">
+                    استخدام الوسائل غير موجودة في اللعبة للحصول على ميزة أو عدم التوافق مع العالم بطريقة معقولة وبشكل واقعي ومنها التالي وهناك الكثير من المواقف والامثلة التي تندرج تحت Powergaming
+                </div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-title"> الخوف على الحياة - NVL</div>
+                <div class="rule-desc">
+                    عدم الخوف بشكل واقعي على حياتك عندما تتعرض للتهديد بالأسلحة أو بأذى شديد من وسائل أخرى يعتبر الخوف على الحياة شي اساسي ومهم جدا مثال : اذا كان هناك اداة تعرض حياتك للخطر
+                </div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-title"> الميتا جيمينج - Metagaming</div>
+                <div class="rule-desc">
+                    اي معلومة تحصل عليها من خارج المدينة مثال معلومة حصلت عليها من بث او دسكورد او مقطع باليوتيوب كلها تعتبر مخالفة
+                </div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-title"> القتل العشوائي - RDM</div>
+                <div class="rule-desc">
+                    قتل الأشخاص دون سبب, تهديد, بصورة عشوائية او بدون عداوة يعتبر القتل العشوائي ممنوع ومخالف للنظام العام للسيرفر.
+                </div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-title">🧾 قانون تقدير الحياة - NWL</div>
+                <div class="rule-desc">
+                    يجب احترام حياة اللاعبين الآخرين وعدم تعريضهم للخطر بدون سبب داخل اللعبة.
+                </div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-title">📜 القوانين العامة</div>
+                <div class="rule-desc">
+                    الالتزام بالاحترام داخل السيرفر وعدم الإساءة لأي شخص.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // جعل القوانين قابلة للطي والفتح
+        document.querySelectorAll('.rule-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
+    <!-- نماذج التقديم -->
+    <section id="general-application" class="section">
+        <h2 class="section-title">تقديم انضمام لريد تاون</h2>
+        <div class="application-form">
+            <form id="generalForm">
+                <div class="form-group">
+                    <label>الاسم الكامل *</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>العمر *</label>
+                    <input type="number" required min="16">
+                </div>
+                <div class="form-group">
+                    <label>رقم الهاتف *</label>
+                    <input type="tel" required>
+                </div>
+                <div class="form-group">
+                    <label>لماذا تريد الانضمام لريد تاون؟ *</label>
+                    <textarea required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">تقديم الطلب</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function showApplication(jobType) {
+            // تحقق إذا كان المستخدم مسجل الدخول
+            const userInfo = document.getElementById('userInfo');
+            if (userInfo.style.display !== 'flex') {
+                alert('⚠️ يرجى تسجيل الدخول أولاً باستخدام Discord');
+                return;
+            }
+            
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(jobType + '-application').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // معالجة نماذج التقديم
+        document.getElementById('generalForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('✅ تم تقديم طلب الانضمام لريد تاون بنجاح!');
+            showSection('home');
+        });
+
+        // التحقق من تسجيل الدخول عند فتح الصفحة
+        function checkLoginStatus() {
+            // هنا راح يكون كود للتحقق من الـ token في localStorage أو cookies
+            // علشان الآن، بنحاكي أن المستخدم مسجل دخول إذا كان في token
+            const token = localStorage.getItem('discord_token');
+            if (token) {
+                document.getElementById('discordLogin').style.display = 'none';
+                document.getElementById('applyNow').style.display = 'inline-block';
+                document.getElementById('userInfo').style.display = 'flex';
+            }
+        }
+
+        // تشغيل التحقق عند تحميل الصفحة
+        checkLoginStatus();
+    </script>
+</body>
+</html>
